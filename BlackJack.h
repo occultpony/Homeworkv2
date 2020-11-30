@@ -36,7 +36,7 @@ private:
     bool isUpsideDown;
 public:
     Card();
-    Card(cardname n);
+    Card(cardsuit s, cardname n);
 
     void flip();
     int getValue();
@@ -103,8 +103,45 @@ public:
     House():GenericPlayer(){};
     House(string n):GenericPlayer(n){};
 
-    virtual bool IsHitting() const;
+    bool IsHitting() const override;
     void FlipFirstCard();
+};
+
+class Deck : public Hand
+{
+  public:
+      Deck()
+      {
+          Cards.reserve(52);
+          Populate();
+      };
+
+      void Populate();
+      void Shuffle();
+      void Deal(Hand& aHand);
+      void AdditionalCards(GenericPlayer& aGenericPlayer);
+};
+
+class Game
+{
+private:
+    Deck deck;
+    Hand dealersHand;
+    vector<Player> Players;
+public:
+    Game(vector<string>& names)
+    {
+        vector<string>::const_iterator pName;
+        for (pName = names.begin(); pName != names.end(); ++pName)
+        {
+            Players.push_back(static_cast<Player> (*pName); //ERROR: Invalid cast to abstract class type 'Player'
+        }
+
+        srand(static_cast<unsigned int>(time(0)));
+        Deck.Populate();
+        Deck.Shuffle();
+
+    }
 };
 
 #endif // BLACKJACK_H_INCLUDED

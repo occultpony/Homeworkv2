@@ -1,9 +1,10 @@
 #include <iostream>
+#include <algorithm>
 #include "BlackJack.h"
 
 Card::Card():name(two){};
 
-Card::Card(cardname n): name(n){};
+Card::Card(cardsuit s, cardname n): suit(s), name(n){};
 
 void Card::flip()
 {
@@ -90,6 +91,38 @@ void House::FlipFirstCard()
     else
     {
         cout << "No card to flip!\n";
+    }
+}
+
+void Deck::Populate()
+{
+
+    clear();
+    for (int s = cardsuit::clubs; s <= cardsuit::spades; ++s)
+    {
+        for (int r = cardname::ace; r <= cardname::king; ++r)
+        {
+            add(new Card((cardsuit)s, (cardname)r));
+        }
+    }
+
+}
+
+void Deck::Shuffle()
+{
+    random_shuffle(Cards.begin(), Cards.end());
+}
+
+void Deck::Deal(Hand& aHand)
+{
+    if (!Cards.empty())
+    {
+        aHand.add(Cards.back());
+        Cards.pop_back();
+    }
+    else
+    {
+        cout << "Sorry, out of cards. Unable to deal";
     }
 }
 
